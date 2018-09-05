@@ -3,19 +3,18 @@ import os
 
 import numpy as np
 
-from prinfo.testers.svmplus import Li2016SDCATesterWithHPSelection as L2016SDCAT
-from prinfo.testers.svmplus import Li2016AdamTesterWithHPSelection as L2016AdamT
-from whitehorses.loaders.supervised import LinearSVMPlusLoader as LSVMPL
-from whitehorses.loaders.simple import GaussianLoader as GL
-from whitehorses.loaders.simple import BernoulliLoader as BL
-from whitehorses.loaders.dynamics import LinearDynamicsSequenceLoader as LDSL
+from prinfo.testers import Li2016SDCATesterWithHPSelection as L2016SDCAT
+from prinfo.testers import Li2016AdamTesterWithHPSelection as L2016AdamT
+from prinfo.loaders import LinearSVMPlusLoader as LSVMPL
+from prinfo.loaders import GaussianLoader as GL
+from prinfo.loaders import BernoulliLoader as BL
+from prinfo.loaders import LinearDynamicsSequenceLoader as LDSL
 from prinfo.loaders import ARDSSubsampledEHRLUPILoader as ARDSSEHRLUPIL
-from prinfo.loaders import ARDSSubsampledEHRLUPIComparisonLoader as ARDSSEHRLUPICL
 from prinfo.loaders import ARDSSubsampledEHRLoader as ARDSSEHRL
-from whitehorses.servers.batch import BatchServer as BS
-from drrobert.stats import get_binary_classification_eval as get_bce
-from theline.utils import get_rotation
-from fitterhappier.zeroorder import ParallelHyperBandOptimizer as PHBO
+from prinfo.servers import BatchServer as BS
+from prinfo.testers.utils import get_binary_classification_eval as get_bce
+from prinfo.utils import get_rotation
+from prinfo.optimizers import ParallelHyperBandOptimizer as PHBO
 
 @click.command()
 @click.option('--n', default=1000)
@@ -30,7 +29,6 @@ from fitterhappier.zeroorder import ParallelHyperBandOptimizer as PHBO
 @click.option('--ards-dir', default=None)
 @click.option('--num-processes', default=None)
 @click.option('--mixture', default=False)
-@click.option('--comparison', default=False)
 def run_things_all_day_bb(
     n,
     do,
@@ -43,8 +41,7 @@ def run_things_all_day_bb(
     max_distance,
     ards_dir,
     num_processes,
-    mixture,
-    comparison):
+    mixture):
 
     server = None
     loader = None
@@ -60,7 +57,7 @@ def run_things_all_day_bb(
     else:
         ards_path = os.path.join(
             ards_dir, 'bin_train.csv')
-        loader = ARDSSEHRLUPICL(ards_path) if comparison else ARDSSEHRLUPIL(ards_path)
+        loader = ARDSSEHRLUPIL(ards_path)
         server = BS(loader)
 
         server.get_data()

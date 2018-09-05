@@ -69,7 +69,7 @@ def get_dual_evaluation(
     params = np.dot((alphas * train_y).T, train_X).T
     y_hat = np.sign(np.dot(test_X, params))
 
-    return get_binary_class_evaluation(test_y, y_hat)
+    return get_binary_classification_eval(test_y, y_hat)
 
 def get_primal_evaluation(
     fold_optimizer, 
@@ -79,4 +79,4 @@ def get_primal_evaluation(
     w = fold_optimizer.get_parameters()[:test_X.shape[1],:]
     y_hat = np.sign(np.dot(test_X, w))
 
-    return get_binary_class_evaluation(test_y, y_hat)
+    return get_binary_classification_eval(test_y, y_hat)

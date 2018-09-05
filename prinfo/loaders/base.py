@@ -4,6 +4,41 @@ from ..utils import get_svd_power
 from ..utils import get_rank_k
 from ..utils import get_checklist
 
+class BernoulliLoader:
+
+    def __init__(self, n, m, p=0.5, lazy=True):
+
+        self.n = n
+        self.m = m
+        self.p = p
+        self.lazy = lazy
+
+        self.data = None
+
+        if not self.lazy:
+            self._set_data()
+
+    def get_data(self):
+
+        if self.data is None:
+            self._set_data()
+
+        return self.data
+
+    def _set_data(self):
+
+        init = np.random.binomial(1, self.p, size=self.n*self.m)
+
+        self.data = init.reshape((self.n, self.m))
+
+    def rows(self):
+
+        return self.n
+
+    def cols(self):
+
+        return self.m
+
 class GaussianLoader:
 
     def __init__(self, 
@@ -166,3 +201,58 @@ def _get_batch(bs, p, k=None, mean=None, unit_norm=True):
         batch += mean
 
     return batch
+
+class LinearDynamicsSequenceLoader:
+
+    def __init__(self,
+        A,
+        num_data,
+        seed=None):
+
+        self.A = A
+        self.num_data = num_data
+        
+        if seed is None:
+            seed = np.ones((self.A.shape[1], 1))
+
+        self.seed = seed
+
+        self._set_noiseless_Y()
+        self._set_Y()
+
+    def _set_noiseless_Y(self):
+
+        y_list = [self.seed]
+
+        for t in range(self.num_data):
+            old_y = y_list[-1]
+            new_y = np.dot(self.A, old_y)
+
+            y_list.append(new_y)
+
+        self.noiseless_Y = np.array(y_list[1:])[:,:,0]
+
+    def _set_Y(self):
+
+        noise = np.random.randn(
+            self.num_data, 
+            self.seed.shape[0])
+
+        self.Y = self.noiseless_Y + noise
+
+    def get_data(self):
+
+        return np.copy(self.Y)
+
+    def rows(self):
+
+        return self.Y.shape[0]
+
+    def cols(self):
+
+        return self.Y.shape[1]
+
+    def refresh(self):
+
+        self._set_Y()
+

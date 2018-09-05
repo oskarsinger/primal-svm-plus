@@ -7,13 +7,20 @@
 ## Code
 
 Dependencies:
-    * Click
-    * Numpy
-    * Scipy
+    * click
+    * numpy
+    * scipy
+    * pathos
 
 ### Loaders
 
 #### Synthetic
+
+##### Gaussian
+
+##### Bernoulli
+
+##### Linear Dynamics Sequence
 
 #### Real
 

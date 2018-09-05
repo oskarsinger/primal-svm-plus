@@ -3,11 +3,11 @@ import os
 
 import numpy as np
 
-from prinfo.testers.svmplus import Li2016BFGSTester as L2016BFGST
-from whitehorses.loaders.simple import GaussianLoader as GL
-from whitehorses.loaders.supervised import LinearSVMPlusLoader as LSVMPL
+from prinfo.testers import Li2016BFGSTester as L2016BFGST
+from prinfo.loaders import GaussianLoader as GL
+from prinfo.loaders import LinearSVMPlusLoader as LSVMPL
 from prinfo.loaders import ARDSSubsampledEHRLUPILoader as ARDSSEHRLUPIL
-from whitehorses.servers.batch import BatchServer as BS
+from prinfo.servers import BatchServer as BS
 
 @click.command()
 @click.option('--n', default=1000)
