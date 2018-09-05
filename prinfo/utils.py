@@ -1,5 +1,12 @@
 import numpy as np
 
+def get_moving_avg(old, new, beta):
+
+    weighted_old = beta * old
+    weighted_new = (1 - beta) * new
+
+    return weighted_old + weighted_new
+
 def get_checklist(keys):
 
     return {k : False for k in keys}

@@ -1,14 +1,14 @@
 import numpy as np
 
-from models.svm import Li2016SVMPlus as L2016SVMP
-from fitterhappier.coordinate import StochasticCoordinateDescentOptimizer as SCDO
-from fitterhappier.qn import DiagonalAdamOptimizer
-from fitterhappier.qn import FullAdaGradOptimizer
-from fitterhappier.qn import StochasticCoordinateDiagonalAdamServer as SCDAS
-from fitterhappier.qn import BFGSSolver as BFGSS
-from fitterhappier.zeroorder import HyperBandOptimizer
-from whitehorses.utils import get_random_k_folds as get_rkf
-from drrobert.stats import log_uniform
+from prinfo.models import Li2016SVMPlusModel as L2016SVMPM
+from prinfo.optimizers import StochasticCoordinateDescentOptimizer as SCDO
+from prinfo.optimizers import DiagonalAdamOptimizer
+from prinfo.optimizers import FullAdaGradOptimizer
+from prinfo.optimizers import StochasticCoordinateDiagonalAdamServer as SCDAS
+from prinfo.optimizers import BFGSSolver as BFGSS
+from prinfo.optimizers import HyperBandOptimizer
+from .utils import get_random_k_folds as get_rkf
+from .utils import log_uniform
 from .utils import get_dual_evaluation as get_evaluation
 
 class Li2016FullAdaGradTester:
@@ -57,7 +57,7 @@ class Li2016FullAdaGradTester:
 
         for (fold, holdout) in self.folds:
             fold_data = (X_o[fold,:], X_p[fold,:], y[fold,:])
-            model = L2016SVMP(
+            model = L2016SVMPM(
                 self.c, 
                 self.gamma, 
                 theta=self.theta,
@@ -157,7 +157,7 @@ class Li2016AdamTester:
 
         for (fold, holdout) in self.folds:
             fold_data = (X_o[fold,:], X_p[fold,:], y[fold,:])
-            model = L2016SVMP(
+            model = L2016SVMPM(
                 self.c, 
                 self.gamma, 
                 theta=self.theta,
@@ -247,7 +247,7 @@ class Li2016BFGSTester:
             w_init = np.copy(w_init)
 
         self.w_init = w_init
-        self.model = L2016SVMP(
+        self.model = L2016SVMPM(
             self.c, 
             self.gamma,
             self.o_kernel,
@@ -338,7 +338,7 @@ class Li2016AdamTesterWithHPSelection:
 
         hps = self.zero_order.get_parameters()
         (c, gamma, delta, beta1, beta2, eta0, theta) = hps
-        model = L2016SVMP(
+        model = L2016SVMPM(
             c, 
             gamma, 
             theta=theta,
@@ -367,7 +367,7 @@ class Li2016AdamTesterWithHPSelection:
 
         for (fold, holdout) in self.folds:
             fold_data = (X_o[fold,:], X_p[fold,:], y[fold,:])
-            model = L2016SVMP(
+            model = L2016SVMPM(
                 c, 
                 gamma, 
                 theta=theta,
@@ -496,7 +496,7 @@ class Li2016SDCATesterWithHPSelection:
 
         hps = self.zero_order.get_parameters()
         (c, gamma, delta, beta1, beta2, eta0, theta) = hps
-        model = L2016SVMP(
+        model = L2016SVMPM(
             c, 
             gamma, 
             theta=theta,
@@ -525,7 +525,7 @@ class Li2016SDCATesterWithHPSelection:
 
         for (fold, holdout) in self.folds:
             fold_data = (X_o[fold,:], X_p[fold,:], y[fold,:])
-            model = L2016SVMP(
+            model = L2016SVMPM(
                 c, 
                 gamma, 
                 theta=theta,
