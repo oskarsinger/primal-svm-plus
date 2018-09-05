@@ -2,7 +2,7 @@ import os
 
 import numpy as np
 
-from whitehorses.utils import get_one_hots as get_oh
+from .utils import get_one_hots as get_oh
 
 class ARDSSubsampledEHRLUPILoader:
 

@@ -6,8 +6,8 @@ packages = [
     'loaders',
     'servers',
     'models',
-    'testers',
-    'optimizers'
+    'optimizers',
+    'testers'
 ]
 
 setup(
