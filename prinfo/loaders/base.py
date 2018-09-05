@@ -1,8 +1,8 @@
 import numpy as np
 
 from ..utils import get_svd_power
-from theline.random.utils import get_rank_k
-from drrobert.misc import get_checklist
+from ..utils import get_rank_k
+from ..utils import get_checklist
 
 class GaussianLoader:
 

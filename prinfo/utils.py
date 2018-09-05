@@ -1,5 +1,9 @@
 import numpy as np
 
+def get_checklist(keys):
+
+    return {k : False for k in keys}
+
 def get_multi_dot(As):
 
     return reduce(lambda B,A: np.dot(B,A), As)
@@ -43,6 +47,19 @@ def get_largest_entries(s, energy=None, k=None):
             s[count+1:] = 0
 
     return s
+
+def get_rank_k(m, n, k):
+
+    if k > min([m, n]):
+        raise ValueError(
+            'The value of k must not exceed the minimum matrix dimension.')
+
+    A = np.zeros((m,n))
+
+    U = np.random.randn(m, k)
+    V = np.random.randn(k, n)
+
+    return np.dot(U, V)
 
 def get_thresholded(x, upper=None, lower=None):
 
