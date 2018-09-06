@@ -31,6 +31,10 @@ class BernoulliLoader:
 
         self.data = init.reshape((self.n, self.m))
 
+    def name(self):
+
+        return 'BernoulliData'
+
     def rows(self):
 
         return self.n
